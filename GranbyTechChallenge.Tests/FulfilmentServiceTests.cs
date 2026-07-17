@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GranbyTechChallenge.Strategies;
 
 namespace GranbyTechChallenge.Tests
 {
@@ -13,7 +14,7 @@ namespace GranbyTechChallenge.Tests
     public class FulfilmentServiceTests
     {
         [Test]
-        public void CanFulfilOrder_ShouldReturnTrue_WhenEnoughStockExists()
+        public void Process_ShouldFulfilOrder_WhenEnoughStockExists()
         {
             // Arrange
             var stock = new List<StockItem>
@@ -43,16 +44,23 @@ namespace GranbyTechChallenge.Tests
 
             var order = new Order
             {
-                Quantity = 3
+                Id = 1,
+                OrderNumber = "ORD001",
+                TemplateBundle = template,
+                Quantity = 3,
+                ReceivedDate = DateTime.Today,
+                DispatchDeadline = DateTime.Today.AddDays(2)
             };
 
-            var service = new FulfilmentService();
+            var strategy = new FifiFulfilmentStrategy();
 
             // Act
-            var result = service.CanFulfilOrder(order, template, stock);
+            var result = strategy.Process(
+        new List<Order> { order },
+        stock);
 
             // Assert
-            result.Should().BeTrue();
+            Assert.That(result.FulfilledOrders.Count, Is.EqualTo(1));
         }
     }
 }

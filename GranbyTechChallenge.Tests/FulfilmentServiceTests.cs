@@ -1,4 +1,6 @@
 ﻿using GranbyTechChallenge.Models;
+using GranbyTechChallenge.Services;
+using FluentAssertions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +9,10 @@ using System.Threading.Tasks;
 
 namespace GranbyTechChallenge.Tests
 {
+    [TestFixture]
     public class FulfilmentServiceTests
     {
-        [Fact]
+        [Test]
         public void CanFulfilOrder_ShouldReturnTrue_WhenEnoughStockExists()
         {
             // Arrange
